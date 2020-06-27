@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+    Vpc:
+      Description: VPC to use
+      Type: 'AWS::EC2::VPC::Id'
+      Default: 'vpc-0a78c7ac037118c80'
+    SubnetId1:
+      Description: Subnet to use
+      Type: 'AWS::EC2::Subnet::Id'
+      Default: 'subnet-00136cce891cdfd5e'
+    SubnetId2:
+      Description: Subnet to use
+      Type: 'AWS::EC2::Subnet::Id'
+      Default: 'subnet-025cd08a0faa0067f'
+Resources:
+  Instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-098f16afa9edf40be
+      KeyName: MyKey
+      Monitoring: true
+      SecurityGroupIds:
+        - sg-0e6b5058686da7523
+      SubnetId: !Ref SubnetId1
+      UserData:
+            Fn::Base64: !Sub |
+                #!/bin/bash
+                sudo yum update -y
+                sudo yum install -y httpd
+                cat <<EOF > /var/www/html/index.html
+                I am server 1
+                EOF
+                sudo systemctl start httpd
+                sudo chkconfig httpd on
+  Instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-098f16afa9edf40be
+      KeyName: MyKey
+      Monitoring: true
+      SecurityGroupIds:
+        - sg-0e6b5058686da7523
+      SubnetId: !Ref SubnetId2
+      UserData:
+            Fn::Base64: !Sub |
+                #!/bin/bash
+                sudo yum update -y
+                sudo yum install -y httpd
+                cat <<EOF > /var/www/html/index.html
+                I am server 2
+                EOF
+                sudo systemctl start httpd
+                sudo chkconfig httpd on
+
+  Route53:
+     Type: AWS::Route53::RecordSet
+     Properties:
+       HostedZoneName: cmcloudlab694.info.
+       Name: www.cmcloudlab694.info.
+       ResourceRecords:
+         - !GetAtt Instance1.PublicIp
+         - !GetAtt Instance2.PublicIp
+       TTL: '300'
+       Type: A

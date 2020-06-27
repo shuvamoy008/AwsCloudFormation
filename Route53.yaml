@@ -1,0 +1,12 @@
+Resources:
+  Route53:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: cmcloudlab1404.info.
+      Name: www.cmcloudlab1404.info.
+      ResourceRecords:
+        - 34.200.220.130
+        - 3.83.65.25
+        - 54.174.206.95
+      TTL: '300'
+      Type: A

@@ -1,0 +1,17 @@
+{
+  "resourceName": {
+      "Description": "mys3 bucket",
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "AccessControl": "Private | PublicRead | PublicReadWrite | AuthenticatedRead | LogDeliveryWrite | BucketOwnerRead | BucketOwnerFullControl",
+          "BucketName": "",
+          "CorsConfiguration": {},
+          "LifecycleConfiguration": {},
+          "NotificationConfiguration": {},
+          "VersioningConfiguration": {},
+          "WebsiteConfiguration": {},
+          "Tags": []
+        }
+      },
+      "Properties": "-"
+  }
